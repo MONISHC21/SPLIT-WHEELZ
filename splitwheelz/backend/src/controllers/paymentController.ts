@@ -6,10 +6,19 @@ import { AppError, asyncHandler } from '../middleware/errorHandler';
 import { AuthRequest } from '../middleware/auth';
 import { logger } from '../config/logger';
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || '',
-  key_secret: process.env.RAZORPAY_KEY_SECRET || '',
-});
+let _razorpay: Razorpay | null = null;
+
+function getRazorpay(): Razorpay {
+  if (!_razorpay) {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    if (!keyId || !keySecret) {
+      throw new AppError('Payment service not configured', 503);
+    }
+    _razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
+  }
+  return _razorpay;
+}
 
 export const createOrder = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { bookingId, ownershipId, type = 'BOOKING_PAYMENT', amount } = req.body;
@@ -40,7 +49,7 @@ export const createOrder = asyncHandler(async (req: AuthRequest, res: Response) 
     throw new AppError('Invalid amount', 400);
   }
 
-  const razorpayOrder = await razorpay.orders.create({
+  const razorpayOrder = await getRazorpay().orders.create({
     amount: finalAmount,
     currency,
     receipt: `sw_${Date.now()}`,
@@ -97,7 +106,7 @@ export const verifyPayment = asyncHandler(async (req: AuthRequest, res: Response
   }
 
   // Fetch Razorpay payment details for cross-check
-  const razorpayPayment = await razorpay.payments.fetch(razorpay_payment_id);
+  const razorpayPayment = await getRazorpay().payments.fetch(razorpay_payment_id);
   if (razorpayPayment.status !== 'captured') {
     throw new AppError('Payment not captured', 400);
   }
@@ -234,7 +243,7 @@ export const requestRefund = asyncHandler(async (req: AuthRequest, res: Response
     }
   }
 
-  const refund = await razorpay.payments.refund(payment.razorpayPaymentId, {
+  const refund = await getRazorpay().payments.refund(payment.razorpayPaymentId, {
     amount: Math.round(Number(payment.amount) * 100),
     notes: { reason, userId: req.user!.id },
   });
