@@ -1,6 +1,7 @@
 {
   "name": "splitwheelz",
   "private": true,
+  "version": "1.0.0",
   "workspaces": ["frontend", "backend"],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
