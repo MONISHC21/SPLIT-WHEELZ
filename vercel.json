@@ -1,0 +1,6 @@
+{
+  "installCommand": "cd splitwheelz/frontend && npm install",
+  "buildCommand": "cd splitwheelz/frontend && npm run build",
+  "outputDirectory": "splitwheelz/frontend/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
