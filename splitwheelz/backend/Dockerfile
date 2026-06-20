@@ -1,10 +1,13 @@
 FROM node:18-alpine AS base
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+# Use `npm install` when no lockfile is present to allow builds without package-lock.json
+# Install only production dependencies in the final image
+RUN npm install --omit=dev --no-audit --no-fund
 
 FROM base AS builder
-RUN npm ci
+# Use npm install in the builder as well so builds don't fail when lockfile is missing
+RUN npm install
 COPY . .
 RUN npx prisma generate
 RUN npm run build
