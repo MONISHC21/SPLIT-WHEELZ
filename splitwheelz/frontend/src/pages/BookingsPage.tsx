@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Calendar, Car, Clock, X, Eye, AlertTriangle } from 'lucide-react'
+import { Calendar, Car, Clock, X, Eye, TriangleAlert as AlertTriangle } from 'lucide-react'
 import { useMyBookings, useCancelBooking } from '@/hooks/useVehicles'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -117,7 +117,7 @@ export default function BookingsPage() {
                           <span>{formatDuration(Number(booking.durationHours))}</span>
                         </div>
                         <div className="text-sm font-bold text-navy">
-                          {formatCurrency(booking.finalAmount)}
+                          {formatCurrency(booking.finalAmount || booking.totalCost)}
                         </div>
                       </div>
 

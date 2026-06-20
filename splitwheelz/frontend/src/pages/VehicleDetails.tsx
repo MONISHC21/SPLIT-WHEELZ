@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import {
-  MapPin, Star, Shield, Users, Fuel, Gauge, Settings2,
-  ChevronLeft, ChevronRight, ArrowRight, CheckCircle,
-  MessageSquare, Calendar, Zap, AlertTriangle,
-} from 'lucide-react'
+import { MapPin, Star, Shield, Users, Fuel, Gauge, Settings2, ChevronLeft, ChevronRight, ArrowRight, CircleCheck as CheckCircle, MessageSquare, Calendar, Zap, TriangleAlert as AlertTriangle } from 'lucide-react'
 import { useVehicle, useOwnershipDetails } from '@/hooks/useVehicles'
 import { useAuthStore } from '@/stores/authStore'
 import { ownershipApi } from '@/lib/api'
@@ -16,6 +12,7 @@ import { UserAvatar } from '@/components/ui/avatar'
 import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { formatCurrency, getFuelIcon, formatRelativeTime } from '@/lib/utils'
+import type { VehicleReview } from '@/types'
 import toast from 'react-hot-toast'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -161,7 +158,7 @@ export default function VehicleDetails() {
 
               {vehicle.images.length > 1 && (
                 <div className="flex gap-2 p-4 overflow-x-auto scrollbar-hide">
-                  {vehicle.images.map((img, i) => (
+                  {vehicle.images.map((img: string, i: number) => (
                     <button
                       key={i}
                       onClick={() => setSelectedImage(i)}
@@ -241,7 +238,7 @@ export default function VehicleDetails() {
                       <div className="mt-6">
                         <h3 className="font-semibold text-navy mb-3">Features & Amenities</h3>
                         <div className="flex flex-wrap gap-2">
-                          {vehicle.features.map((f) => (
+                          {vehicle.features.map((f: string) => (
                             <span key={f} className="flex items-center gap-1.5 bg-primary-50 text-primary-700 text-sm px-3 py-1.5 rounded-full">
                               <CheckCircle className="w-3.5 h-3.5" />
                               {f}
@@ -284,7 +281,7 @@ export default function VehicleDetails() {
                     {!vehicle.reviews?.length ? (
                       <p className="text-slate-500 text-center py-4">No reviews yet.</p>
                     ) : (
-                      vehicle.reviews.map((r) => (
+                      vehicle.reviews.map((r: VehicleReview) => (
                         <div key={r.id} className="p-4 border border-slate-100 rounded-xl">
                           <div className="flex items-center gap-3 mb-2">
                             {r.user && <UserAvatar src={r.user.avatar} name={r.user.name || 'User'} size="sm" />}

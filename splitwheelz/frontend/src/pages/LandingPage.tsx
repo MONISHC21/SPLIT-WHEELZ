@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import {
-  ArrowRight, Car, Users, Calendar, Shield, Star, TrendingDown,
-  CheckCircle, ChevronDown, Sparkles, Zap, BarChart3, MessageSquare,
-} from 'lucide-react'
+import { ArrowRight, Car, Users, Calendar, Shield, Star, TrendingDown, CircleCheck as CheckCircle, ChevronDown, Sparkles, Zap, ChartBar as BarChart3, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useFeaturedVehicles } from '@/hooks/useVehicles'
 import { formatCurrency } from '@/lib/utils'
+import type { Vehicle } from '@/types'
 
 // Animation variants
 const fadeUp = {
@@ -414,7 +412,7 @@ export default function LandingPage() {
             </AnimatedSection>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredVehicles.slice(0, 3).map((vehicle, index) => (
+              {featuredVehicles.slice(0, 3).map((vehicle: Vehicle, index: number) => (
                 <motion.div
                   key={vehicle.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -456,7 +454,7 @@ export default function LandingPage() {
                         </div>
 
                         <div className="flex gap-2 flex-wrap mb-4">
-                          {vehicle.features.slice(0, 3).map((f) => (
+                          {vehicle.features.slice(0, 3).map((f: string) => (
                             <span key={f} className="text-xs bg-slate-50 text-slate-600 px-2 py-1 rounded-lg border">
                               {f}
                             </span>

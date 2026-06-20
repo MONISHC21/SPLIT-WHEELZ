@@ -58,7 +58,7 @@ export default function UserDashboard() {
   const stats = [
     {
       title: 'My Vehicles',
-      value: dashData?.activeOwnerships?.length || 0,
+      value: Array.isArray(dashData?.activeOwnerships) ? dashData.activeOwnerships.length : (dashData?.activeOwnerships || 0),
       icon: Car,
       color: 'bg-blue-500',
       trend: '+1 this month',
@@ -66,7 +66,7 @@ export default function UserDashboard() {
     },
     {
       title: 'Upcoming Bookings',
-      value: dashData?.upcomingBookings?.length || 0,
+      value: Array.isArray(dashData?.upcomingBookings) ? dashData.upcomingBookings.length : (dashData?.upcomingBookings || 0),
       icon: Calendar,
       color: 'bg-violet-500',
       trend: 'Next booking soon',
@@ -74,15 +74,15 @@ export default function UserDashboard() {
     },
     {
       title: 'This Month',
-      value: formatCurrency(dashData?.monthlyStats?.amountSpent || 0),
+      value: formatCurrency(dashData?.monthlyStats?.[0]?.amountSpent || 0),
       icon: CreditCard,
       color: 'bg-emerald-500',
-      trend: `${dashData?.monthlyStats?.bookings || 0} bookings`,
+      trend: `${dashData?.monthlyStats?.[0]?.bookings || 0} bookings`,
       href: '/payments',
     },
     {
       title: 'Hours Driven',
-      value: `${Math.round(Number(dashData?.monthlyStats?.hoursUsed || 0))}h`,
+      value: `${Math.round(Number(dashData?.monthlyStats?.[0]?.hoursUsed || 0))}h`,
       icon: Clock,
       color: 'bg-orange-500',
       trend: 'This month',
@@ -220,7 +220,7 @@ export default function UserDashboard() {
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              {!dashData?.activeOwnerships?.length ? (
+              {!Array.isArray(dashData?.activeOwnerships) || dashData.activeOwnerships.length === 0 ? (
                 <div className="text-center py-8">
                   <Car className="w-12 h-12 text-slate-200 mx-auto mb-3" />
                   <p className="text-slate-500 text-sm">No vehicles yet</p>
@@ -271,11 +271,11 @@ export default function UserDashboard() {
             </div>
           </CardHeader>
           <CardContent>
-            {!dashData?.upcomingBookings?.length ? (
+            {!Array.isArray(dashData?.upcomingBookings) || dashData.upcomingBookings.length === 0 ? (
               <div className="text-center py-8">
                 <Calendar className="w-12 h-12 text-slate-200 mx-auto mb-3" />
                 <p className="text-slate-500 text-sm mb-4">No upcoming bookings</p>
-                {dashData?.activeOwnerships?.length ? (
+                {Array.isArray(dashData?.activeOwnerships) && dashData.activeOwnerships.length > 0 ? (
                   <Button size="sm" asChild>
                     <Link to={`/bookings/new/${dashData.activeOwnerships[0]?.vehicleId}`}>
                       Book Now
@@ -311,7 +311,7 @@ export default function UserDashboard() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-navy text-sm">{formatCurrency(booking.finalAmount)}</p>
+                      <p className="font-bold text-navy text-sm">{formatCurrency(booking.finalAmount || booking.totalCost)}</p>
                     </div>
                   </Link>
                 ))}

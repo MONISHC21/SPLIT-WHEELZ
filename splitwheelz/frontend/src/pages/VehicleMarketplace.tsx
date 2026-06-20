@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import {
-  Search, SlidersHorizontal, Grid3X3, List, Star, MapPin,
-  Fuel, Users, X, ChevronDown, Zap,
-} from 'lucide-react'
+import { Search, SlidersHorizontal, Grid3x2 as Grid3X3, List, Star, MapPin, Fuel, Users, X, ChevronDown, Zap, Car } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { vehicleApi } from '@/lib/api'
 import { useVehicleStore } from '@/stores/vehicleStore'

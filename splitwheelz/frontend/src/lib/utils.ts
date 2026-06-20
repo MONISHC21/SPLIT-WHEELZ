@@ -97,3 +97,58 @@ export function getOwnershipColor(percentage: number): string {
   if (percentage >= 10) return '#F59E0B'
   return '#8B5CF6'
 }
+
+export function formatDateTime(date: string | Date): string {
+  return format(new Date(date), 'dd MMM yyyy, hh:mm a')
+}
+
+export function getBookingStatusColor(status: string): string {
+  const colors: Record<string, string> = {
+    PENDING: 'bg-yellow-100 text-yellow-800',
+    CONFIRMED: 'bg-blue-100 text-blue-800',
+    CANCELLED: 'bg-red-100 text-red-800',
+    COMPLETED: 'bg-green-100 text-green-800',
+    NO_SHOW: 'bg-gray-100 text-gray-800',
+  }
+  return colors[status] || 'bg-gray-100 text-gray-800'
+}
+
+export function getVehicleStatusColor(status: string): string {
+  const colors: Record<string, string> = {
+    AVAILABLE: 'bg-green-100 text-green-800',
+    FULLY_BOOKED: 'bg-blue-100 text-blue-800',
+    MAINTENANCE: 'bg-yellow-100 text-yellow-800',
+    INACTIVE: 'bg-gray-100 text-gray-800',
+  }
+  return colors[status] || 'bg-gray-100 text-gray-800'
+}
+
+export function getFuelIcon(fuelType: string): string {
+  const icons: Record<string, string> = {
+    PETROL: '⛽',
+    DIESEL: '🛢️',
+    ELECTRIC: '⚡',
+    HYBRID: '🔋',
+    CNG: '🌿',
+  }
+  return icons[fuelType] || '⛽'
+}
+
+export function formatDuration(hours: number): string {
+  if (hours < 1) return `${Math.round(hours * 60)}m`
+  if (hours < 24) return `${hours}h`
+  const days = Math.floor(hours / 24)
+  const remainingHours = hours % 24
+  return remainingHours > 0 ? `${days}d ${remainingHours}h` : `${days}d`
+}
+
+export function getPaymentStatusColor(status: string): string {
+  const colors: Record<string, string> = {
+    PENDING: 'bg-yellow-100 text-yellow-800',
+    PROCESSING: 'bg-blue-100 text-blue-800',
+    COMPLETED: 'bg-green-100 text-green-800',
+    FAILED: 'bg-red-100 text-red-800',
+    REFUNDED: 'bg-gray-100 text-gray-800',
+  }
+  return colors[status] || 'bg-gray-100 text-gray-800'
+}
