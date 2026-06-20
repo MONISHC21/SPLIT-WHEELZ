@@ -4,3 +4,6 @@ splitwheelz/node_modules
 .agents
 .local
 .replit
+.upm
+.cache
+.config
